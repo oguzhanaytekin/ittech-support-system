@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITTECH Teknik Destek ve Bilişim Altyapı Yönetim Portalı - Online arıza takibi, donanım envanteri, SLA metrikleri ve bilgi bankası.">
+    <title>ITTECH - Teknik Destek & Yönetim Portalı</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div id="login-screen" class="glass-container active" style="max-width: 480px;">
+        <div class="logo">
+            <img src="logo.png" alt="ITTECH Elektrik Elektronik Bilişim" class="login-logo-img">
+        </div>
+        <h2>Kurumsal Servis Portalı</h2>
+        <p>Arıza bildirimleri, envanter yönetimi, canlı SLA takibi ve teknik servis operasyon merkezi.</p>
+        
+        <form id="login-form">
+            <div class="input-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" placeholder="Kullanıcı adınızı girin (örn: admin, teknisyen, musteri)" required autocomplete="username">
+            </div>
+            <div class="input-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" placeholder="Şifrenizi girin" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-primary" id="login-btn">Giriş Yap</button>
+        </form>
+
+        <div style="margin-top: 20px; padding: 14px; background: rgba(18, 22, 32, 0.7); border-radius: 8px; border: 1px solid var(--glass-border); font-size: 12px; color: var(--text-muted);">
+            <strong style="color: var(--text-main); display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Hızlı Rol Seçimi (Test):
+            </strong>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="pill-btn" onclick="quickLogin('admin')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Yönetici (admin)
+                </button>
+                <button type="button" class="pill-btn" onclick="quickLogin('teknisyen')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> Teknisyen (teknisyen)
+                </button>
+                <button type="button" class="pill-btn" onclick="quickLogin('Fatma D.')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Müşteri (Fatma D.)
+                </button>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            <a href="index.html">← Kurumsal Web Sitesine Dön</a>
+        </div>
+    </div>
+
+    <!-- ===== DASHBOARD SCREEN ===== -->
+    <div id="dashboard-screen" class="glass-container dashboard hidden" style="max-width: 1200px; width: 95%;">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <a href="index.html" style="display: inline-block;">
+                    <img src="logo.png" alt="ITTECH Elektrik Elektronik Bilişim" class="dashboard-logo-img">
+                </a>
+            </div>
+            
+            <!-- Live Role Switcher (Immediate Persona Change) -->
+            <div class="role-switcher">
+                <span class="role-title">Aktif Rol:</span>
+                <button type="button" class="role-btn active" id="role-admin-btn" onclick="switchUserRole('admin')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Yönetici
+                </button>
+                <button type="button" class="role-btn" id="role-tech-btn" onclick="switchUserRole('tech')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> Teknisyen
+                </button>
+                <button type="button" class="role-btn" id="role-user-btn" onclick="switchUserRole('user')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Müşteri
+                </button>
+            </div>
+
+            <div class="user-info">
+                <span id="user-greeting">Hoş Geldiniz, Yönetici</span>
+                <a href="index.html" class="btn-secondary" style="text-decoration: none; padding: 6px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Ana Sayfa
+                </a>
+                <button id="logout-btn" class="btn-secondary" style="padding: 6px 12px; font-size: 13px;">Çıkış</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="portal-nav-tabs">
+            <button class="tab-btn active" id="tab-dashboard-btn" onclick="switchTab('dashboard')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Gösterge Paneli
+            </button>
+            <button class="tab-btn" id="tab-tickets-btn" onclick="switchTab('tickets')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="6" cy="12" r="1"></circle><circle cx="18" cy="12" r="1"></circle><line x1="10" y1="6" x2="10" y2="18" stroke-dasharray="2 2"></line></svg> Destek Talepleri
+            </button>
+            <button class="tab-btn" id="tab-inventory-btn" onclick="switchTab('inventory')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg> Donanım Envanteri
+            </button>
+            <button class="tab-btn" id="tab-stock-btn" onclick="switchTab('stock')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="16.5 9.4 7.55 4.24"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg> Stok Takibi
+            </button>
+            <button class="tab-btn" id="tab-knowledge-btn" onclick="switchTab('knowledge')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Bilgi Bankası
+            </button>
+            <button class="tab-btn" id="tab-reports-btn" onclick="switchTab('reports')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Raporlama & Dışa Aktar
+            </button>
+        </nav>
+
+        <main>
+            <!-- ================= TAB 1: DASHBOARD ================= -->
+            <div id="tab-dashboard" class="tab-pane">
+                <!-- Summary Metrics -->
+                <div class="summary-cards">
+                    <div class="summary-card sc-total">
+                        <div class="sc-number" id="sc-total">6</div>
+                        <div class="sc-label">Toplam Talep</div>
+                    </div>
+                    <div class="summary-card sc-open">
+                        <div class="sc-number" id="sc-open">2</div>
+                        <div class="sc-label">Açık / İnceleniyor</div>
+                    </div>
+                    <div class="summary-card sc-progress">
+                        <div class="sc-number" id="sc-progress">2</div>
+                        <div class="sc-label">İşlemde / Onarımda</div>
+                    </div>
+                    <div class="summary-card sc-done">
+                        <div class="sc-number" id="sc-done">2</div>
+                        <div class="sc-label">Çözüldü / Teslim</div>
+                    </div>
+                </div>
+
+                <!-- SLA & Analytics Row -->
+                <div class="admin-charts">
+                    <div class="card chart-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Durum Dağılımı</h3>
+                            <span class="health-badge health-good">SLA %99.4</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Kategori Dağılımı</h3>
+                            <span style="font-size: 12px; color: var(--text-muted);">Ort. Çözüm: 2.4 Saat</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live System Activity Feed -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3>Canlı Sistem ve Teknisyen Aktiviteleri</h3>
+                        <span style="font-size: 12px; color: var(--success);">● Sistem Çevrimiçi</span>
+                    </div>
+                    <ul class="activity-feed" id="activity-feed">
+                        <li class="activity-item">
+                            <span class="activity-icon"><svg class="svg-icon" style="color:var(--primary);" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></span>
+                            <span class="activity-text"><strong>Mustafa E. (Teknisyen):</strong> TKT-1047 için 10G SFP+ modül değişimi yaptı ve VLAN tablolarını güncelledi.</span>
+                            <span class="activity-time">10 dk önce</span>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-icon"><svg class="svg-icon" style="color:var(--purple);" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></span>
+                            <span class="activity-text"><strong>Burak S. (Teknisyen):</strong> TKT-1045 için 892 GB veri kurtarma işlemi tamamlandı, MD5 hash doğrulaması yapıldı.</span>
+                            <span class="activity-time">42 dk önce</span>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-icon"><svg class="svg-icon" style="color:var(--success);" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span>
+                            <span class="activity-text"><strong>Fatma D. (Müşteri):</strong> HP LaserJet Pro 400 cihazı için yeni destek talebi oluşturdu (TKT-1048).</span>
+                            <span class="activity-time">1 saat önce</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: TICKETS ================= -->
+            <div id="tab-tickets" class="tab-pane hidden">
+                <!-- Action bar -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 20px; font-weight: 700;">Destek Talepleri Listesi</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">Tüm arıza, bakım ve donanım müdahale kayıtları.</p>
+                    </div>
+                    <button id="show-new-ticket-btn" class="btn-primary" onclick="toggleNewTicketForm()">+ Yeni Destek Talebi Oluştur</button>
+                </div>
+
+                <!-- New Ticket Form -->
+                <div id="new-ticket-form-container" class="card hidden" style="margin-bottom: 24px; border-color: rgba(59, 130, 246, 0.4);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3>Yeni Destek Talebi Kaydı</h3>
+                        <button type="button" class="btn-secondary" style="padding: 4px 10px;" onclick="toggleNewTicketForm()">Kapat</button>
+                    </div>
+                    <form id="ticket-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="ticket-title">Talep Başlığı / Cihaz Modeli *</label>
+                                <input type="text" id="ticket-title" required placeholder="Örn: Bilgisayar açılmıyor, bip sesi veriyor">
+                            </div>
+                            <div class="input-group">
+                                <label for="ticket-owner">Talep Eden / Müşteri *</label>
+                                <input type="text" id="ticket-owner" required placeholder="Örn: Burak Kaya">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="ticket-category">Sorun Alanı / Kategori *</label>
+                                <select id="ticket-category">
+                                    <option value="Bilgisayar/Donanım">Bilgisayar / Donanım</option>
+                                    <option value="Ağ/İnternet">Ağ / İnternet</option>
+                                    <option value="Yazılım/İşletim Sistemi">Yazılım / İşletim Sistemi</option>
+                                    <option value="Veri Kurtarma">Veri Kurtarma</option>
+                                    <option value="Diğer">Diğer</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="ticket-priority">Öncelik Seviyesi</label>
+                                <select id="ticket-priority">
+                                    <option value="Düşük">Düşük</option>
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="Yüksek">Yüksek (Kritik)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="ticket-desc">Arıza Açıklaması & Hata Belirtileri *</label>
+                            <textarea id="ticket-desc" rows="3" required placeholder="Sorunun detaylarını, varsa hata kodlarını belirtin..."></textarea>
+                        </div>
+                        <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end;">
+                            <button type="button" class="btn-secondary" onclick="toggleNewTicketForm()">İptal</button>
+                            <button type="submit" class="btn-primary">Talebi Sisteme Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search & Filters -->
+                <div class="filter-bar">
+                    <input type="text" id="search-input" placeholder="Bilet no, müşteri adı veya konuda ara..." class="search-input" oninput="applyFilters()">
+                    <select id="filter-status" class="filter-select" onchange="applyFilters()">
+                        <option value="all">Tüm Durumlar</option>
+                        <option value="Açık">Açık</option>
+                        <option value="İşlemde">İşlemde</option>
+                        <option value="Çözüldü">Çözüldü</option>
+                    </select>
+                    <select id="filter-priority" class="filter-select" onchange="applyFilters()">
+                        <option value="all">Tüm Öncelikler</option>
+                        <option value="Yüksek">Yüksek</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Düşük">Düşük</option>
+                    </select>
+                    <select id="filter-category" class="filter-select" onchange="applyFilters()">
+                        <option value="all">Tüm Kategoriler</option>
+                        <option value="Bilgisayar/Donanım">Donanım</option>
+                        <option value="Ağ/İnternet">Ağ & İnternet</option>
+                        <option value="Veri Kurtarma">Veri Kurtarma</option>
+                        <option value="Yazılım/İşletim Sistemi">Yazılım</option>
+                    </select>
+                </div>
+
+                <!-- Tickets Table -->
+                <div class="card tickets-container" style="margin-top: 16px;">
+                    <div class="table-responsive">
+                        <table id="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th>Kayıt No</th>
+                                    <th>Başlık / Arıza</th>
+                                    <th>Müşteri</th>
+                                    <th>Kategori</th>
+                                    <th>Öncelik</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tickets-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: INVENTORY ================= -->
+            <div id="tab-inventory" class="tab-pane hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 20px; font-weight: 700;">Kurumsal Donanım ve Cihaz Envanteri</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">Sunucu, switch, iş istasyonu ve çevre birimleri varlık takip sistemi.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openNewDeviceModal()">+ Yeni Envanter Kaydı Ekle</button>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Varlık No</th>
+                                    <th>Cihaz / Model</th>
+                                    <th>Ağ IP & MAC</th>
+                                    <th>Departman</th>
+                                    <th>Donanım Sağlığı</th>
+                                    <th>Son Bakım</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody">
+                                <tr>
+                                    <td><strong>ENV-SRV-01</strong></td>
+                                    <td>Dell PowerEdge R740 (2x Xeon, 128GB RAM)</td>
+                                    <td><code>192.168.1.10</code><br><small style="color:var(--text-muted)">00:1A:2B:3C:4D:5E</small></td>
+                                    <td>Sunucu Odası</td>
+                                    <td><span class="health-badge health-good">%100 Sağlam</span></td>
+                                    <td>01.09.2026</td>
+                                    <td><button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="viewInventoryDetail('ENV-SRV-01')">Detay</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ENV-SW-01</strong></td>
+                                    <td>Cisco Catalyst 2960X 48-Port PoE+</td>
+                                    <td><code>192.168.1.2</code><br><small style="color:var(--text-muted)">00:2B:3C:4D:5E:6F</small></td>
+                                    <td>Omurga Ağ</td>
+                                    <td><span class="health-badge health-good">%100 Sağlam</span></td>
+                                    <td>15.08.2026</td>
+                                    <td><button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="viewInventoryDetail('ENV-SW-01')">Detay</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ENV-PC-104</strong></td>
+                                    <td>Lenovo ThinkCentre M70q (i5, 16GB, 512GB SSD)</td>
+                                    <td><code>192.168.1.45</code><br><small style="color:var(--text-muted)">A4:BB:6D:88:12:30</small></td>
+                                    <td>Muhasebe</td>
+                                    <td><span class="health-badge health-warn">%78 SMART Uyarısı</span></td>
+                                    <td>20.08.2026</td>
+                                    <td><button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="viewInventoryDetail('ENV-PC-104')">Detay</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ENV-PRN-02</strong></td>
+                                    <td>HP LaserJet Enterprise M507dn</td>
+                                    <td><code>192.168.1.80</code><br><small style="color:var(--text-muted)">3C:D9:2B:10:44:02</small></td>
+                                    <td>İnsan Kaynakları</td>
+                                    <td><span class="health-badge health-good">%95 Normal</span></td>
+                                    <td>05.09.2026</td>
+                                    <td><button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="viewInventoryDetail('ENV-PRN-02')">Detay</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ENV-NAS-01</strong></td>
+                                    <td>Synology DiskStation DS923+ (4x 8TB RAID 5)</td>
+                                    <td><code>192.168.1.15</code><br><small style="color:var(--text-muted)">90:09:D0:A2:18:77</small></td>
+                                    <td>Yedekleme Merkezi</td>
+                                    <td><span class="health-badge health-good">%100 Sağlam</span></td>
+                                    <td>10.09.2026</td>
+                                    <td><button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="viewInventoryDetail('ENV-NAS-01')">Detay</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: STOCK (Yedek Parça) ================= -->
+            <div id="tab-stock" class="tab-pane hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 20px; font-weight: 700;">Yedek Parça & Stok Takibi</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">Donanım onarımları için depo stok durumunu ve parça hareketlerini yönetin.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openNewStockModal()">+ Yeni Stok Ekle</button>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parça Kodu / Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Adet</th>
+                                    <th>Birim Fiyat</th>
+                                    <th>Durum</th>
+                                    <th>İşlem (Stok Düş)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-tbody">
+                                <!-- Stok verileri dinamik yüklenecek -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 4: KNOWLEDGE BASE ================= -->
+            <div id="tab-knowledge" class="tab-pane hidden">
+                <div class="section-header" style="text-align: left; margin-bottom: 20px;">
+                    <h3 style="font-size: 20px; font-weight: 700;">Bilgi Bankası & Teknik Çözüm Rehberleri</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Sık karşılaşılan kurumsal IT arızalarının adım adım teşhis ve çözüm prosedürleri.</p>
+                </div>
+
+                <div class="kb-grid">
+                    <div class="kb-card" onclick="openKbModal('bsod')">
+                        <div class="kb-card-header">
+                            <div class="kb-icon">
+                                <svg class="svg-icon svg-icon-lg" style="color: var(--primary);" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            </div>
+                            <div>
+                                <h4>Mavi Ekran (BSOD) ve Minidump Analizi</h4>
+                                <span style="font-size: 11px; color: var(--primary);">İşletim Sistemi & Donanım</span>
+                            </div>
+                        </div>
+                        <p>PAGE_FAULT_IN_NONPAGED_AREA ve DRIVER_IRQL_NOT_LESS_OR_EQUAL hatalarında WinDbg ile bellek dökümü analizi adımları.</p>
+                        <div class="kb-meta">
+                            <span><svg class="svg-icon" style="width:13px; height:13px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Okuma: 4 dk</span>
+                            <span style="color: var(--primary);">Rehberi Oku →</span>
+                        </div>
+                    </div>
+
+                    <div class="kb-card" onclick="openKbModal('network')">
+                        <div class="kb-card-header">
+                            <div class="kb-icon">
+                                <svg class="svg-icon svg-icon-lg" style="color: var(--success);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            </div>
+                            <div>
+                                <h4>Ağ Bağlantısı & IP Çakışması Giderme</h4>
+                                <span style="font-size: 11px; color: var(--success);">Ağ Altyapısı</span>
+                            </div>
+                        </div>
+                        <p>Statik ve dinamik IP dağıtımlarında DHCP çakışmaları, ARP tablosu temizliği ve Cat6 kablo empedans testleri.</p>
+                        <div class="kb-meta">
+                            <span><svg class="svg-icon" style="width:13px; height:13px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Okuma: 3 dk</span>
+                            <span style="color: var(--primary);">Rehberi Oku →</span>
+                        </div>
+                    </div>
+
+                    <div class="kb-card" onclick="openKbModal('disk')">
+                        <div class="kb-card-header">
+                            <div class="kb-icon">
+                                <svg class="svg-icon svg-icon-lg" style="color: var(--purple);" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                            </div>
+                            <div>
+                                <h4>Bad Sector Tespiti & Güvenli İmaj Alma</h4>
+                                <span style="font-size: 11px; color: var(--purple);">Veri Kurtarma</span>
+                            </div>
+                        </div>
+                        <p>Okuma hatası veren manyetik disklerde ddrescue ile ters yönde ham sektör kopyalama ve SMART parametre analizi.</p>
+                        <div class="kb-meta">
+                            <span><svg class="svg-icon" style="width:13px; height:13px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Okuma: 6 dk</span>
+                            <span style="color: var(--primary);">Rehberi Oku →</span>
+                        </div>
+                    </div>
+
+                    <div class="kb-card" onclick="openKbModal('vlan')">
+                        <div class="kb-card-header">
+                            <div class="kb-icon">
+                                <svg class="svg-icon svg-icon-lg" style="color: var(--warning);" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
+                            <div>
+                                <h4>802.1Q VLAN ve Firewall Yalıtımı</h4>
+                                <span style="font-size: 11px; color: var(--warning);">Siber Güvenlik</span>
+                            </div>
+                        </div>
+                        <p>Muhasebe ve misafir ağlarının anahtarlayıcı üzerinde etiketlenerek yönlendirici seviyesinde izole edilmesi.</p>
+                        <div class="kb-meta">
+                            <span><svg class="svg-icon" style="width:13px; height:13px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Okuma: 5 dk</span>
+                            <span style="color: var(--primary);">Rehberi Oku →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 5: REPORTS & EXPORT ================= -->
+            <div id="tab-reports" class="tab-pane hidden">
+                <div class="section-header" style="text-align: left; margin-bottom: 20px;">
+                    <h3 style="font-size: 20px; font-weight: 700;">Servis Raporlama ve Dışa Aktarma</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Kurumsal denetim, servis faturalandırma ve veri yedekleme araçları.</p>
+                </div>
+
+                <div class="report-grid">
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <svg class="svg-icon svg-icon-lg" style="color: var(--primary); width: 36px; height: 36px;" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        </div>
+                        <h4>Tüm Kayıtları CSV İndir</h4>
+                        <p>Sistemdeki tüm destek biletlerini Excel uyumlu formatta anında dışa aktarın.</p>
+                        <button class="btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="exportTicketsCSV()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> CSV Olarak İndir
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <svg class="svg-icon svg-icon-lg" style="color: var(--purple); width: 36px; height: 36px;" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        </div>
+                        <h4>JSON Sistem Yedeği</h4>
+                        <p>Mevcut veritabanını, cihaz envanterini ve biletleri tek bir JSON dosyası olarak yedekleyin.</p>
+                        <button class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="exportTicketsJSON()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg> Veritabanı Yedekle
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-icon">
+                            <svg class="svg-icon svg-icon-lg" style="color: var(--success); width: 36px; height: 36px;" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        </div>
+                        <h4>SLA ve Performans Raporu</h4>
+                        <p>Haftalık ve aylık SLA başarı oranını resmi kurumsal formatta yazdırın veya PDF olarak kaydedin.</p>
+                        <button class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="window.print()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Raporu Yazdır
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Audit Log -->
+                <div class="card" style="margin-top: 30px;">
+                    <h3>Sistem Denetim Günlüğü (Audit Trail)</h3>
+                    <div class="table-responsive" style="margin-top: 12px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Olay ID</th>
+                                    <th>İşlem Türü</th>
+                                    <th>Kullanıcı / IP</th>
+                                    <th>Açıklama</th>
+                                    <th>Zaman Damgası</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LOG-9921</td>
+                                    <td><span class="health-badge health-good">AUTH_SUCCESS</span></td>
+                                    <td>admin (192.168.1.100)</td>
+                                    <td>Yönetici girişi yapıldı. Oturum başlatıldı.</td>
+                                    <td>14.09.2026 14:12:08</td>
+                                </tr>
+                                <tr>
+                                    <td>LOG-9920</td>
+                                    <td><span class="health-badge health-warn">STATUS_CHANGE</span></td>
+                                    <td>Mustafa E. (Teknisyen)</td>
+                                    <td>TKT-1047 durumu 'Açık' -> 'İşlemde' güncellendi.</td>
+                                    <td>14.09.2026 13:45:22</td>
+                                </tr>
+                                <tr>
+                                    <td>LOG-9919</td>
+                                    <td><span class="health-badge health-good">TICKET_CREATE</span></td>
+                                    <td>Fatma D. (Web)</td>
+                                    <td>Yeni kayıt oluşturuldu: TKT-1048</td>
+                                    <td>14.09.2026 12:30:15</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== TICKET DETAIL MODAL ===== -->
+    <div id="ticket-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-container active">
+            <div class="modal-header">
+                <h3 id="modal-title">Bilet Detayı & Servis Fişi</h3>
+                <button type="button" id="modal-close" class="btn-secondary" style="padding: 4px 12px; font-size: 18px; line-height: 1;" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-row">
+                    <span class="detail-label">Kayıt No:</span>
+                    <span id="modal-id" class="detail-value" style="color: var(--primary);"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Talep Eden:</span>
+                    <span id="modal-owner" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tarih:</span>
+                    <span id="modal-date" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Kategori / Öncelik:</span>
+                    <span id="modal-cat-prio" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Durum:</span>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span id="modal-status-badge" class="badge"></span>
+                        <select id="modal-status-select" class="status-select" onchange="updateTicketStatusFromModal(this.value)">
+                            <option value="Açık">Açık</option>
+                            <option value="İşlemde">İşlemde</option>
+                            <option value="Çözüldü">Çözüldü</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="detail-row desc-row">
+                    <span class="detail-label">Arıza / Sorun Özeti:</span>
+                    <p id="modal-desc" class="detail-desc"></p>
+                </div>
+                
+                <!-- Technician note section -->
+                <div class="detail-row desc-row" style="margin-top: 10px;">
+                    <span class="detail-label">Teknisyen Servis Notu:</span>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <input type="text" id="modal-tech-input" placeholder="Teknisyen işlem notu girin..." style="flex: 1;">
+                        <button type="button" class="btn-primary" style="padding: 8px 14px; font-size: 13px;" onclick="saveTechnicianNote()">Kaydet</button>
+                    </div>
+                    <p id="modal-tech-log" style="font-size: 12px; color: var(--text-muted); margin-top: 6px;"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;" onclick="window.print()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Fişi Yazdır
+                </button>
+                <button type="button" id="modal-delete-btn" class="btn-danger" onclick="deleteTicketFromModal()">Kaydı Sil</button>
+                <button type="button" class="btn-primary" onclick="closeModal()">Tamam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== KNOWLEDGE BASE MODAL ===== -->
+    <div id="kb-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-container active" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="kb-modal-title">Çözüm Rehberi</h3>
+                <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 18px; line-height: 1;" onclick="closeKbModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="kb-modal-content"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeKbModal()">Kapat</button>
+                <button type="button" class="btn-primary" style="display: inline-flex; align-items: center; gap: 6px;" onclick="window.print()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Rehberi Yazdır
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== INVENTORY DETAIL MODAL ===== -->
+    <div id="inv-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-container active" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 id="inv-modal-title">Envanter Detayı</h3>
+                <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 18px; line-height: 1;" onclick="closeInvModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="inv-modal-content"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeInvModal()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== NEW DEVICE MODAL ===== -->
+    <div id="new-device-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-container active" style="max-width: 540px;">
+            <div class="modal-header">
+                <h3>+ Yeni Donanım Varlığı Ekle</h3>
+                <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 18px; line-height: 1;" onclick="closeNewDeviceModal()">&times;</button>
+            </div>
+            <form id="new-device-form" onsubmit="saveNewDevice(event)">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="dev-asset-id">Varlık / Envanter No *</label>
+                            <input type="text" id="dev-asset-id" placeholder="Örn: ENV-PC-105" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="dev-dept">Departman / Konum *</label>
+                            <input type="text" id="dev-dept" placeholder="Örn: Muhasebe / Atölye" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="dev-model">Cihaz & Donanım Modeli *</label>
+                        <input type="text" id="dev-model" placeholder="Örn: Lenovo ThinkPad E15 (i7, 16GB, 512GB SSD)" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="dev-ip">IP Adresi</label>
+                            <input type="text" id="dev-ip" placeholder="192.168.1.55">
+                        </div>
+                        <div class="input-group">
+                            <label for="dev-mac">MAC Adresi</label>
+                            <input type="text" id="dev-mac" placeholder="A4:B2:C3:D4:E5:F6">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="dev-health">Donanım Sağlığı</label>
+                            <select id="dev-health">
+                                <option value="health-good">%100 Sağlam</option>
+                                <option value="health-good">%95 Normal</option>
+                                <option value="health-warn">%80 Bakım Gerekli</option>
+                                <option value="health-warn">%70 SMART Uyarısı</option>
+                                <option value="health-bad">Arızalı / Onarımda</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="dev-date">Bakım Tarihi</label>
+                            <input type="text" id="dev-date" placeholder="15.09.2026">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="dev-specs">Teknik Detaylar & Donanım Özellikleri</label>
+                        <textarea id="dev-specs" rows="2" placeholder="İşlemci, bellek, disk türü, işletim sistemi veya garanti süresi..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeNewDeviceModal()">İptal</button>
+                    <button type="submit" class="btn-primary">Envantere Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== NEW STOCK MODAL ===== -->
+    <div id="new-stock-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-container active" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>+ Yeni Yedek Parça Ekle</h3>
+                <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 18px; line-height: 1;" onclick="closeNewStockModal()">&times;</button>
+            </div>
+            <form id="new-stock-form" onsubmit="saveNewStok(event)">
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="stok-ad">Parça Kodu / Adı *</label>
+                        <input type="text" id="stok-ad" placeholder="Örn: 500GB NVMe SSD" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="stok-kategori">Kategori</label>
+                            <input type="text" id="stok-kategori" placeholder="Örn: Depolama" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="stok-adet">Stok Adedi *</label>
+                            <input type="number" id="stok-adet" min="1" value="1" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="stok-fiyat">Birim Fiyat (₺)</label>
+                        <input type="number" id="stok-fiyat" placeholder="850">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeNewStockModal()">İptal</button>
+                    <button type="submit" class="btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== CUSTOM CONFIRM MODAL ===== -->
+    <div id="confirm-modal" class="modal-overlay hidden" style="z-index: 2000;">
+        <div class="modal-content glass-container active" style="max-width: 400px; text-align: center; padding: 24px;">
+            <div style="margin-bottom: 12px;">
+                <svg class="svg-icon" style="width: 44px; height: 44px; color: var(--warning);" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <h3 style="font-size: 18px; margin-bottom: 12px;">Onay Gerekli</h3>
+            <p id="confirm-modal-text" style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;"></p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button type="button" id="confirm-btn-no" class="btn-secondary">İptal</button>
+                <button type="button" id="confirm-btn-yes" class="btn-danger">Evet, Sil</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

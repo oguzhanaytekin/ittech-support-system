@@ -1,0 +1,92 @@
+
+=================== index.html ===================
+L23: ['📍'] | <span>📍 Demetevler Mah. İvedik Cad. No: 142/A Yenimahalle / ANKARA</span>
+L24: ['📞', '✉', '🕒'] | <span class="top-bar-contact">📞 0312 345 67 89 | ✉️ info@ittechbilisim.com.tr | 🕒 Hf.İçi 0
+L55: ['🔍'] | <a href="#cihaz-sorgula" class="btn-hero-primary">🔍 Cihaz Durumu Sorgula</a>
+L66: ['✅'] | <div class="card-icon">✅</div>
+L73: ['✅'] | <div class="card-icon">✅</div>
+L80: ['✅'] | <div class="card-icon">✅</div>
+L100: ['🔎'] | <span class="tracker-icon">🔎</span>
+L198: ['💻'] | <div class="service-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">💻
+L202: ['✓'] | <li>✓ Anakart & Güç Kaynağı Onarımı</li>
+L203: ['✓'] | <li>✓ Ekran, Klavye & Batarya Değişimi</li>
+L204: ['✓'] | <li>✓ Sıvı Teması & Oksit Temizleme</li>
+L205: ['✓'] | <li>✓ Termal Macun & Fan Bakımı</li>
+L212: ['💾'] | <div class="service-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">💾
+L216: ['✓'] | <li>✓ Sabit Disk & SSD Veri Kurtarma</li>
+L217: ['✓'] | <li>✓ USB Bellek & Hafıza Kartı Kurtarma</li>
+L218: ['✓'] | <li>✓ Format Sonrası Dosya Kurtarma</li>
+L219: ['✓'] | <li>✓ Silinen Dosya Geri Getirme</li>
+L226: ['🌐'] | <div class="service-icon" style="background: linear-gradient(135deg, #10b981, #059669);">🌐
+L230: ['✓'] | <li>✓ Ethernet Kablolama & Sonlandırma</li>
+L231: ['✓'] | <li>✓ Modem & Router Yapılandırma</li>
+L232: ['✓'] | <li>✓ Kablosuz Ağ Genişletme</li>
+L233: ['✓'] | <li>✓ İnternet Bağlantı Sorun Giderme</li>
+L240: ['🛡'] | <div class="service-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🛡
+L244: ['✓'] | <li>✓ Windows Kurulumu & Güncelleme</li>
+L245: ['✓'] | <li>✓ Virüs & Zararlı Yazılım Temizleme</li>
+L246: ['✓'] | <li>✓ Antivirüs & Güvenlik Yazılımı Kurulumu</li>
+L247: ['✓'] | <li>✓ Veri Yedekleme & Aktarma</li>
+L384: ['⚡'] | <span class="calc-tag">⚡ Canlı Fiyat & Süre Algoritması Çıktısı</span>
+L417: ['🚀'] | 🚀 Arıza Kaydı Oluştur & Takip Kodu Al
+L442: ['⭐', '⭐', '⭐', '⭐', '⭐'] | <div class="review-stars">⭐⭐⭐⭐⭐</div>
+L455: ['⭐', '⭐', '⭐', '⭐', '⭐'] | <div class="review-stars">⭐⭐⭐⭐⭐</div>
+L468: ['⭐', '⭐', '⭐', '⭐', '⭐'] | <div class="review-stars">⭐⭐⭐⭐⭐</div>
+L570: ['🔧'] | <span>🔧</span> Profesyonel Donanım Onarım Servisi
+L573: ['💾'] | <span>💾</span> Güvenilir Veri Kurtarma Hizmeti
+L576: ['📊'] | <span>📊</span> Online Arıza Takip Portalı
+L589: ['🚀'] | <a href="support.html" class="btn-hero-primary" style="font-size: 17px;">🚀 Destek Portalın
+L601: ['✓'] | <p style="margin-top: 12px; font-size: 13px; color: var(--primary);">✓ Ankara Üniversitesi
+L622: ['📍'] | <p>📍 Demetevler Mah. İvedik Cad. No: 142/A Yenimahalle / ANKARA</p>
+L623: ['📞'] | <p>📞 Tel: (0312) 345 67 89</p>
+L624: ['📱'] | <p>📱 Gsm: (0532) 987 65 43</p>
+L625: ['✉'] | <p>✉️ info@ittechbilisim.com.tr</p>
+L638: ['✕'] | <button type="button" class="btn-secondary" style="padding: 6px 14px;" onclick="closeServi
+L653: ['🎉'] | <div style="font-size: 50px; margin-bottom: 12px;">🎉</div>
+L738: ['💻'] | title: '💻 Bilgisayar & Donanım Onarımı',
+L758: ['💾'] | title: '💾 Veri Kurtarma & Disk İnceleme',
+L778: ['🌐'] | title: '🌐 Temel Ağ Kurulumu & Modem Yapılandırması',
+L798: ['🛡'] | title: '🛡️ Yazılım Desteği, Virüs Temizliği & Lisanslama',
+
+=================== support.html ===================
+L38: ['💡'] | <strong style="color: var(--text-main); display: block; margin-bottom: 6px;">💡 Test İçin H
+L40: ['👑'] | <button type="button" class="pill-btn" onclick="quickLogin('admin')">👑 Yönetici (admin)</b
+L41: ['🔧'] | <button type="button" class="pill-btn" onclick="quickLogin('teknisyen')">🔧 Teknisyen (tekn
+L42: ['👤'] | <button type="button" class="pill-btn" onclick="quickLogin('Fatma D.')">👤 Müşteri (Fatma D
+L60: ['👑'] | <button type="button" class="role-btn active" id="role-admin-btn" onclick="switchUserRole(
+L61: ['🔧'] | <button type="button" class="role-btn" id="role-tech-btn" onclick="switchUserRole('tech')"
+L62: ['👤'] | <button type="button" class="role-btn" id="role-user-btn" onclick="switchUserRole('user')"
+L67: ['🌐'] | <a href="index.html" class="btn-secondary" style="text-decoration: none; padding: 6px 12px
+L74: ['📊'] | <button class="tab-btn active" id="tab-dashboard-btn" onclick="switchTab('dashboard')">📊 G
+L75: ['🎫'] | <button class="tab-btn" id="tab-tickets-btn" onclick="switchTab('tickets')">🎫 Destek Talep
+L76: ['💻'] | <button class="tab-btn" id="tab-inventory-btn" onclick="switchTab('inventory')">💻 Donanım 
+L77: ['📦'] | <button class="tab-btn" id="tab-stock-btn" onclick="switchTab('stock')">📦 Stok Takibi</but
+L78: ['📚'] | <button class="tab-btn" id="tab-knowledge-btn" onclick="switchTab('knowledge')">📚 Bilgi Ba
+L79: ['📄'] | <button class="tab-btn" id="tab-reports-btn" onclick="switchTab('reports')">📄 Raporlama & 
+L135: ['🔧'] | <span class="activity-icon">🔧</span>
+L140: ['💾'] | <span class="activity-icon">💾</span>
+L145: ['📩'] | <span class="activity-icon">📩</span>
+L168: ['✕'] | <button type="button" class="btn-secondary" style="padding: 4px 10px;" onclick="toggleNewT
+L214: ['🔍'] | <input type="text" id="search-input" placeholder="🔍 Bilet no, müşteri adı veya konuda ara.
+L374: ['💻'] | <div class="kb-icon">💻</div>
+L382: ['🕒'] | <span>🕒 Okuma: 4 dk</span>
+L389: ['🌐'] | <div class="kb-icon">🌐</div>
+L397: ['🕒'] | <span>🕒 Okuma: 3 dk</span>
+L404: ['💾'] | <div class="kb-icon">💾</div>
+L412: ['🕒'] | <span>🕒 Okuma: 6 dk</span>
+L419: ['🛡'] | <div class="kb-icon">🛡️</div>
+L427: ['🕒'] | <span>🕒 Okuma: 5 dk</span>
+L443: ['📊'] | <div class="report-icon">📊</div>
+L446: ['📥'] | <button class="btn-primary" style="width: 100%;" onclick="exportTicketsCSV()">📥 CSV Olarak
+L450: ['💾'] | <div class="report-icon">💾</div>
+L453: ['💾'] | <button class="btn-secondary" style="width: 100%;" onclick="exportTicketsJSON()">💾 Veritab
+L457: ['🖨'] | <div class="report-icon">🖨️</div>
+L460: ['🖨'] | <button class="btn-secondary" style="width: 100%;" onclick="window.print()">🖨️ Raporu Yazd
+L513: ['✕'] | <button type="button" id="modal-close" class="btn-secondary" style="padding: 6px 14px;" on
+L559: ['🖨'] | <button type="button" class="btn-secondary" onclick="window.print()">🖨️ Fişi Yazdır</butto
+L571: ['✕'] | <button type="button" class="btn-secondary" style="padding: 6px 14px;" onclick="closeKbMod
+L576: ['🖨'] | <button type="button" class="btn-primary" onclick="window.print()">🖨️ Rehberi Yazdır</butt
+L586: ['✕'] | <button type="button" class="btn-secondary" style="padding: 6px 14px;" onclick="closeInvMo
+L600: ['✕'] | <button type="button" class="btn-secondary" style="padding: 6px 14px;" onclick="closeNewDe
+L662: ['✕'] | <button type="button" class="btn-secondary" style="padding: 6px 14px;" onclick="document.g
+L696: ['⚠'] | <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
